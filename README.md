@@ -29,3 +29,15 @@ sequenceDiagram
 ```
 
 ## インフラ構成
+
+```mermaid
+flowchart TD
+    actions[GitHub Actions] --> worker[Cloudflare Workers]
+    subgraph Cloudflare
+        worker --> db[(Cloudfalre D1)]
+    end
+    subgraph LINE
+        worker --> line[Linebot]
+        line --> u[我々のLINEグループ]
+    end
+```
