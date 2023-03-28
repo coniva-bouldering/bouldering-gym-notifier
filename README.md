@@ -37,7 +37,7 @@ flowchart TD
         worker --> db[(Cloudflare D1)]
     end
     subgraph LINE
-        worker --> line[Linebot]
+        worker --> line[LINEbot]
         line --> u[我々のLINEグループ]
     end
 ```
