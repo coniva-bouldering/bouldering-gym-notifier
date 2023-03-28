@@ -34,7 +34,7 @@ sequenceDiagram
 flowchart TD
     actions[GitHub Actions] --> worker[Cloudflare Workers]
     subgraph Cloudflare
-        worker --> db[(Cloudfalre D1)]
+        worker --> db[(Cloudflare D1)]
     end
     subgraph LINE
         worker --> line[Linebot]
