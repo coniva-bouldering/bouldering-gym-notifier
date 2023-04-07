@@ -7,14 +7,14 @@
 ```mermaid
 sequenceDiagram
     autonumber
-    participant action as GitHub Actions
+    participant cron as Cron Triggers
     participant worker as Cloudflare Workers
     participant web as ボルダリングジムのWebサイト
     participant db as Cloudflare D1
     participant line as LINE API
 
-    action->>action: 1時間毎にWorkerを起動するようにする
-    action->>worker: Worker起動リクエストを送る
+    cron->>cron: 1時間毎にWorkerを起動するようにする
+    cron->>worker: Worker起動リクエストを送る
     worker->>web: お知らせのURLを3件取得する
     web-->>worker: URL
     worker->>db: URLが登録済であるか検索する
@@ -32,8 +32,8 @@ sequenceDiagram
 
 ```mermaid
 flowchart TD
-    actions[GitHub Actions] --> worker[Cloudflare Workers]
     subgraph Cloudflare
+        cron[Cron Triggers] --> worker[Cloudflare Workers]
         worker --> db[(Cloudflare D1)]
     end
     subgraph LINE
