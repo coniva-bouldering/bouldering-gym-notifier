@@ -2,7 +2,7 @@
   "name": "bouldering-gym-notifier",
   "version": "1.0.0",
   "description": "ボルダリングジムの更新を知らせるボット",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
