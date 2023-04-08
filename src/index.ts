@@ -1,7 +1,20 @@
-addEventListener('scheduled', (event: any) => {
-    event.waitUntil(handleScheduled(event))
-})
+type Env = {
+    [key: string]: string
+}
 
-async function handleScheduled(event: any) {
-    console.log(`Hello : ${new Date()}`)
+export default {
+    async scheduled(
+        controller: ScheduledController,
+        env: Env,
+        ctx: ExecutionContext,
+    ) {
+        ctx.waitUntil(triggerEvent(controller, env))
+    },
+}
+
+async function triggerEvent(
+    controller: ScheduledController,
+    env: Env,
+): Promise<void> {
+    console.log("Hello ", controller.scheduledTime);
 }
