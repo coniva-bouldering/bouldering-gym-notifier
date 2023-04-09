@@ -4,7 +4,9 @@
   "description": "ボルダリングジムの更新を知らせるボット",
   "main": "index.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint src",
+    "format": "eslint src --fix"
   },
   "keywords": [],
   "author": "",
