@@ -5,8 +5,8 @@
   "main": "index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "eslint src",
-    "format": "eslint src --fix"
+    "lint": "npx eslint src",
+    "format": "npx eslint src --fix"
   },
   "keywords": [],
   "author": "",
