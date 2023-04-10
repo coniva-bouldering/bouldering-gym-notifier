@@ -14,4 +14,20 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18
-      - run: npm run lint
+
+      - name: Cache npm directory
+        uses: actions/cache@v3
+        with:
+          # CIでキャッシュするパス
+          path: ~/.npm
+          # キャッシュを保存・復元するキー
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+          # キャッシュがヒットしなかった時に、サブでキャッシュを探すキー
+          restore-keys: ${{ runner.os }}-npm-
+
+      - name: Install dependencies
+        # package-lock.jsonを見てインストールする
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
