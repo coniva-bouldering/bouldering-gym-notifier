@@ -24,7 +24,7 @@ export const getNews = (): Promise<string[]> => {
 
       return results;
     })
-    .catch((e) => {
-      throw new Error(e);
+    .catch((e: Error) => {
+      throw e;
     });
 };
