@@ -4,6 +4,8 @@
   "description": "ボルダリングジムの更新を知らせるボット",
   "main": "index.ts",
   "scripts": {
+    "dev": "wrangler dev src/index.ts",
+    "deploy": "wrangler publish --minify src/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "npx eslint src",
     "format": "npx eslint src --fix"
@@ -25,6 +27,9 @@
     }
   ],
   "license": "ISC",
+  "dependencies": {
+    "hono": "^3.1.6"
+  },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20230404.0",
     "@types/node": "^18.16.1",
