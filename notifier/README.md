@@ -2,6 +2,17 @@
 
 ボルダリングジムの更新を知らせるボット
 
+## ディレクトリ構成
+
+モノレポで行う
+
+```bash
+
+bouldering-gym-notifier
+├── notifier Cronでスクレイピングと通知を定期実行
+└── line-webhook HonoでLINEからのWebhookを受け取り、送信先グループIDなどを受け取る
+```
+
 ## シーケンス
 
 ```mermaid
@@ -22,7 +33,9 @@ sequenceDiagram
     opt 登録済み
         worker-->worker: 何もせずWorkerを終了
     end
-    worker->>line: LINEbotにURLを投稿させる
+    worker->db: 送信先LINEグループIDを取得
+    db-->>worker: 検索結果
+    worker->>line: LINEグループIDを使いLINEbotにURLを投稿させる
     line-->>worker: 投稿成功
     worker->>db: URLをInsert
     db-->>worker: 成功

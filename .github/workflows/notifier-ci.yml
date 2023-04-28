@@ -1,10 +1,15 @@
 # typescriptのlintをPR時に実行する
-name: CI
+name: notifier-CI
 
 on:
-  pull_request:
+  push:
     branches:
       - main
+    paths:
+      - "notifier/**"
+  pull_request:
+    paths:
+      - "notifier/**"
 
 jobs:
   lint:
@@ -21,13 +26,15 @@ jobs:
           # CIでキャッシュするパス
           path: ~/.npm
           # キャッシュを保存・復元するキー
-          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-notifier-npm-${{ hashFiles('**/package-lock.json') }}
           # キャッシュがヒットしなかった時に、サブでキャッシュを探すキー
-          restore-keys: ${{ runner.os }}-npm-
+          restore-keys: ${{ runner.os }}-notifier-npm-
 
       - name: Install dependencies
         # package-lock.jsonを見てインストールする
         run: npm ci
+        working-directory: ./notifier
 
       - name: Lint
         run: npm run lint
+        working-directory: ./notifier
