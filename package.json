@@ -9,7 +9,21 @@
     "format": "npx eslint src --fix"
   },
   "keywords": [],
-  "author": "",
+  "author": {
+    "name": "coniva-bouldering",
+    "url": "https://github.com/coniva-bouldering"
+  },
+  "contributors ": [
+    {
+      "name": "haton14",
+      "email": "haton14@haton14.com",
+      "url": "https://github.com/haton14"
+    },
+    {
+      "name": "tsuna-cani",
+      "url": "https://github.com/tsuna-can"
+    }
+  ],
   "license": "ISC",
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20230404.0",
@@ -24,7 +38,7 @@
     "wrangler": "^2.17.0"
   },
   "volta": {
-    "node": "18.15.0",
+    "node": "18.16.0",
     "npm": "9.5.1"
   }
 }
