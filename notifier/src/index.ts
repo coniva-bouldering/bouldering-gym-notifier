@@ -1,8 +1,11 @@
 import scrapeGyms from "./scraping/scraping";
+import { sendMessage } from "./line-api/line-api";
+import { getAllGroupId } from "./d1/d1";
 
-type Env = {
-  [key: string]: string;
-};
+interface Env {
+  CHANNEL_ACCESS_TOKEN: string;
+  DB: D1Database;
+}
 
 export default {
   async scheduled(controller: ScheduledController, env: Env, ctx: ExecutionContext) {
@@ -11,6 +14,21 @@ export default {
 };
 
 async function triggerEvent(controller: ScheduledController, env: Env): Promise<void> {
-  console.log("Hello ", controller.scheduledTime, " Env : ", env.API_KEY);
-  console.log(await scrapeGyms());
+  console.log("Hello ", controller.scheduledTime);
+  const URLList = await scrapeGyms();
+  const groupIdList = await getAllGroupId(env.DB);
+
+  if (URLList && URLList.length > 0) {
+    const promises: Promise<void>[] = groupIdList.map((groupId: string) => {
+      return sendMessage(env.CHANNEL_ACCESS_TOKEN, groupId, URLList);
+    });
+
+    Promise.all(promises)
+      .then(() => {
+        console.log("Message sent successfully!");
+      })
+      .catch((e: Error) => {
+        console.error(e);
+      });
+  }
 }
