@@ -31,7 +31,7 @@ app.post("/api/webhook", async (c) => {
     if (event.type === "join") {
       const groupId = event.source.groupId;
       const info = await c.env.DB.prepare(
-        `insert into group_id_table (line_group_id) values (?)`
+        `insert into line_groups (line_group_id) values (?)`
       )
         .bind(groupId)
         .run();

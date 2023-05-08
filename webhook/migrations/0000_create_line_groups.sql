@@ -1,0 +1,6 @@
+-- Migration number: 0000 	 2023-05-08T11:59:51.347Z
+DROP TABLE IF EXISTS line_groups;
+CREATE TABLE line_groups (
+  line_group_id VARCHAR(255) PRIMARY KEY,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
+);
