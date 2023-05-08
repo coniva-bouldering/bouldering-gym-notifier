@@ -1,6 +1,6 @@
 import scrapeGyms from "./scraping/scraping";
 import { sendMessage } from "./line-api/line-api";
-import { getAllGroupId } from "./d1/d1";
+import { getAllGroupId } from "./d1/lineGroupId";
 
 interface Env {
   CHANNEL_ACCESS_TOKEN: string;
