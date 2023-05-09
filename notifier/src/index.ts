@@ -15,6 +15,7 @@ export default {
 
 async function triggerEvent(controller: ScheduledController, env: Env): Promise<void> {
   console.log("Hello ", controller.scheduledTime);
+
   const URLList = await scrapeGyms();
   const groupIdList = await getAllGroupId(env.DB);
 
