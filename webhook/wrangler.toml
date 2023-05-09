@@ -1,9 +1,5 @@
-name = "notifier"
-main = "src/index.ts"
-compatibility_date = "2022-12-01"
-
-[triggers]
-crons = [ "0 * * * *" ]
+name = "webhook"
+compatibility_date = "2023-05-01"
 
 [[ d1_databases ]]
 binding = "DB" # i.e. available in your Worker on env.DB
