@@ -1,9 +1,9 @@
 import { Hono } from "hono";
 
-interface Env {
+type Env = {
   DB: D1Database;
   CHANNEL_ACCESS_TOKEN: string;
-}
+};
 
 type WebhookEvent = {
   type: string;
