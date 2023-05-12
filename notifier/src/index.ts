@@ -1,6 +1,7 @@
 import scrapeGyms from "./scraping/scraping";
 import { sendMessage } from "./line-api/line-api";
 import { getAllGroupId } from "./d1/lineGroupId";
+import { insertArticles } from "./d1/postedArticles";
 
 interface Env {
   CHANNEL_ACCESS_TOKEN: string;
@@ -16,17 +17,21 @@ export default {
 async function triggerEvent(controller: ScheduledController, env: Env): Promise<void> {
   console.log("Hello ", controller.scheduledTime);
 
-  const URLList = await scrapeGyms();
+  const articleList = await scrapeGyms();
   const groupIdList = await getAllGroupId(env.DB);
 
-  if (URLList && URLList.length > 0) {
+  if (articleList && articleList.length > 0) {
     const promises: Promise<void>[] = groupIdList.map((groupId: string) => {
-      return sendMessage(env.CHANNEL_ACCESS_TOKEN, groupId, URLList);
+      return sendMessage(env.CHANNEL_ACCESS_TOKEN, groupId, articleList);
     });
 
-    Promise.all(promises)
-      .then(() => {
+    await Promise.all(promises)
+      .then(async () => {
         console.log("Message sent successfully!");
+        return await insertArticles(env.DB, articleList);
+      })
+      .then(() => {
+        console.log("Articles inserted successfully!");
       })
       .catch((e: Error) => {
         console.error(e);

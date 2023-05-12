@@ -3,7 +3,7 @@ main = "src/index.ts"
 compatibility_date = "2022-12-01"
 
 [triggers]
-crons = [ "0 * * * *" ]
+crons = [ "0 0 * * *" ]
 
 [[ d1_databases ]]
 binding = "DB" # i.e. available in your Worker on env.DB
