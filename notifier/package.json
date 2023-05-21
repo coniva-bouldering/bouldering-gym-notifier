@@ -6,6 +6,7 @@
   "scripts": {
     "deploy": "wrangler publish --minify src/index.ts",
     "dev": "wrangler dev --test-scheduled",
+    "migration": "wrangler d1 migrations apply bouldering_gym_notifier_db",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "npx eslint src",
     "format": "npx eslint src --fix"

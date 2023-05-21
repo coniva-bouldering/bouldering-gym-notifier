@@ -1,0 +1,7 @@
+-- Migration number: 0001 	 2023-05-10T11:28:36.762Z
+-- DROP TABLE IF EXISTS posted_articles;
+CREATE TABLE posted_articles (
+  url VARCHAR(2048) PRIMARY KEY,
+  title VARCHAR(255) NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
+);

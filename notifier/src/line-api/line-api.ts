@@ -1,11 +1,13 @@
+import { Article } from "../../type";
+
 export const sendMessage = async (
   channelAccessToken: string,
   groupId: string,
-  URLList: string[]
+  articleList: Article[]
 ): Promise<void> => {
-  const message = URLList.map((url) => ({
+  const message = articleList.map((article) => ({
     type: "text",
-    text: url,
+    text: article.title + "\n" + article.url,
   }));
 
   return fetch("https://api.line.me/v2/bot/message/push", {

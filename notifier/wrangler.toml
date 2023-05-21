@@ -3,9 +3,10 @@ main = "src/index.ts"
 compatibility_date = "2022-12-01"
 
 [triggers]
-crons = [ "0 * * * *" ]
+crons = [ "0 0 * * *" ]
 
 [[ d1_databases ]]
 binding = "DB" # i.e. available in your Worker on env.DB
 database_name = "bouldering_gym_notifier_db"
 database_id = "d6f9c560-aed5-4c87-8571-3f8f4c85d43a"
+migrations_dir = "../migrations"
