@@ -13,3 +13,8 @@ export const insertArticles = async (
 
   return info;
 };
+
+export const getAllURL = async (DB: D1Database): Promise<string[]> => {
+  const results = await DB.prepare(`select url from posted_articles`).raw<string>();
+  return results.flat() || [];
+};
