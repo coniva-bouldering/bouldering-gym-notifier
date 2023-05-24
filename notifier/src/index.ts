@@ -37,7 +37,7 @@ async function triggerEvent(controller: ScheduledController, env: Env): Promise<
     return Promise.all(promises)
       .then(() => {
         console.log("Message sent successfully!");
-        return insertArticles(env.DB, articleList);
+        return insertArticles(env.DB, filteredArticleList);
       })
       .then(() => {
         console.log("Articles inserted successfully!");
