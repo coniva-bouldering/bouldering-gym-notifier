@@ -4,8 +4,8 @@
   "description": "ボルダリングジムの更新を知らせるボット",
   "main": "index.ts",
   "scripts": {
-    "deploy": "wrangler publish --minify src/index.ts",
-    "dev": "wrangler dev --test-scheduled",
+    "deploy": "wrangler deploy src/index.ts --minify",
+    "dev": "wrangler dev --remote --test-scheduled",
     "migration": "wrangler d1 migrations apply bouldering_gym_notifier_db",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "npx eslint src",
@@ -38,7 +38,7 @@
     "eslint-plugin-prettier": "^4.2.1",
     "prettier": "^2.8.8",
     "typescript": "^5.0.4",
-    "wrangler": "^2.20.0"
+    "wrangler": "^3.0.1"
   },
   "volta": {
     "node": "18.16.0",
