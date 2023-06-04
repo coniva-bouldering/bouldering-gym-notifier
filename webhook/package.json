@@ -2,8 +2,8 @@
   "name": "webhook",
   "version": "0.0.0",
   "scripts": {
-    "dev": "wrangler dev src/index.ts",
-    "deploy": "wrangler publish --minify src/index.ts",
+    "dev": "wrangler dev src/index.ts --remote",
+    "deploy": "wrangler deploy src/index.ts --minify",
     "migration": "wrangler d1 migrations apply bouldering_gym_notifier_db",
     "lint": "npx eslint src",
     "format": "npx eslint src --fix"
@@ -36,7 +36,7 @@
     "eslint-plugin-prettier": "^4.2.1",
     "prettier": "^2.8.8",
     "typescript": "^5.0.4",
-    "wrangler": "2.13.0"
+    "wrangler": "^3.0.1"
   },
   "private": true,
   "volta": {
