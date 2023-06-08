@@ -3,6 +3,7 @@ import { Hono } from "hono";
 type Env = {
   DB: D1Database;
   CHANNEL_ACCESS_TOKEN: string;
+  CHANNEL_SECRET: string;
 };
 
 type WebhookEvent = {
@@ -18,10 +19,32 @@ type WebhookEvent = {
 
 const app = new Hono<{ Bindings: Env }>();
 
-app.post("/api/webhook", async (c) => {
-  const data = await c.req.json();
+const encoder = new TextEncoder();
+const algorithm = { name: "HMAC", hash: "SHA-256" };
 
-  const json = data as {
+const hmac = async (secret: string, body: string) => {
+  const key = await crypto.subtle.importKey(
+    "raw",
+    encoder.encode(secret),
+    algorithm,
+    false,
+    ["sign"]
+  );
+  const signature = await crypto.subtle.sign(algorithm.name, key, encoder.encode(body));
+  return btoa(String.fromCharCode(...new Uint8Array(signature)));
+};
+
+app.post("/api/webhook", async (c) => {
+  const body = await c.req.json();
+
+  const x_line_signature = c.req.headers.get("x-line-signature");
+  const digest = await hmac(c.env.CHANNEL_SECRET, JSON.stringify(body));
+
+  if (digest !== x_line_signature) {
+    return c.text("Bad Request", 400);
+  }
+
+  const json = body as {
     destination: string;
     events: WebhookEvent[];
   };
