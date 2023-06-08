@@ -28,7 +28,7 @@ const hmac = async (secret: string, body: string) => {
     encoder.encode(secret),
     algorithm,
     false,
-    ["sign", "verify"]
+    ["sign"]
   );
   const signature = await crypto.subtle.sign(algorithm.name, key, encoder.encode(body));
   return btoa(String.fromCharCode(...new Uint8Array(signature)));
