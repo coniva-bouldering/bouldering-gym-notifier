@@ -26,6 +26,7 @@ runs:
         restore-keys: ${{ runner.os }}-${{inputs.cache-key}}-npm-
 
     - name: Install dependencies
+      shell: bash
       # package-lock.jsonを見てインストールする
       run: npm ci
       working-directory: ${{inputs.working-directory}}
