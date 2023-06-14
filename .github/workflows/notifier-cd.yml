@@ -3,12 +3,14 @@ name: notifier-CD
 
 on:
   pull_request:
-    paths:
-      - "notifier/**"
+    branches:
+      - main
+    types: [closed]
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true
     name: Deploy
     steps:
       - name: Checkout
