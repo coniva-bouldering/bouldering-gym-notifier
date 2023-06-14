@@ -1,7 +1,10 @@
 # Notifierのデプロイ
 name: notifier-CD
 
-on: workflow_dispatch
+on:
+  pull_request:
+    paths:
+      - "notifier/**"
 
 jobs:
   deploy:
