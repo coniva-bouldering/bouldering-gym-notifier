@@ -1,7 +1,7 @@
 import scrapeGyms from "./scraping/scraping";
 import { sendMessage } from "./line-api/line-api";
 import { getAllGroupId } from "./d1/lineGroupId";
-import { insertArticles, getAllURL } from "./d1/postedArticles";
+import { insertArticles, getAllURL, deleteOldArticles } from "./d1/postedArticles";
 import { Article } from "../type";
 
 interface Env {
@@ -11,11 +11,21 @@ interface Env {
 
 export default {
   async scheduled(controller: ScheduledController, env: Env, ctx: ExecutionContext) {
-    ctx.waitUntil(triggerEvent(controller, env));
+    switch (controller.cron) {
+      case "0 1 * * *":
+        ctx.waitUntil(deleteArticles(controller, env));
+        break;
+      case "0 0 * * *":
+        ctx.waitUntil(scrapeAndSendNews(controller, env));
+        break;
+    }
   },
 };
 
-async function triggerEvent(controller: ScheduledController, env: Env): Promise<void> {
+async function scrapeAndSendNews(
+  controller: ScheduledController,
+  env: Env
+): Promise<void> {
   console.log("Hello ", controller.scheduledTime);
 
   const articleList = await scrapeGyms();
@@ -46,4 +56,16 @@ async function triggerEvent(controller: ScheduledController, env: Env): Promise<
         console.error(e);
       });
   }
+}
+
+async function deleteArticles(controller: ScheduledController, env: Env): Promise<void> {
+  console.log("Hello2 ", controller.scheduledTime);
+
+  return deleteOldArticles(env.DB)
+    .then(() => {
+      console.log("Articles deleted successfully!");
+    })
+    .catch((e: Error) => {
+      console.error(e);
+    });
 }

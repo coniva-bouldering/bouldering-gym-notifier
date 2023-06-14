@@ -18,3 +18,16 @@ export const getAllURL = async (DB: D1Database): Promise<string[]> => {
   const results = await DB.prepare(`select url from posted_articles`).raw<string>();
   return results.flat() || [];
 };
+
+export const deleteOldArticles = async (
+  DB: D1Database,
+  exceptLatestNumber = 10
+): Promise<D1Result<unknown>> => {
+  const info = await DB.prepare(
+    `DELETE FROM posted_articles WHERE url NOT IN (SELECT url FROM posted_articles ORDER BY created_at DESC LIMIT ?);`
+  )
+    .bind(exceptLatestNumber)
+    .run();
+
+  return info;
+};
