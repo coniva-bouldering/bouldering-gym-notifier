@@ -3,6 +3,8 @@ name: notifier-CD
 
 on:
   pull_request:
+    paths:
+      - "notifier/**"
     branches:
       - main
     types: [closed]
