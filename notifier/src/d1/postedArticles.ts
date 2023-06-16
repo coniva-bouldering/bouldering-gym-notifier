@@ -21,7 +21,7 @@ export const getAllURL = async (DB: D1Database): Promise<string[]> => {
 
 export const deleteOldArticles = async (
   DB: D1Database,
-  exceptLatestNumber = 10
+  exceptLatestNumber = 20
 ): Promise<D1Result<unknown>> => {
   const info = await DB.prepare(
     `DELETE FROM posted_articles WHERE url NOT IN (SELECT url FROM posted_articles ORDER BY created_at DESC LIMIT ?);`
