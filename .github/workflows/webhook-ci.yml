@@ -1,0 +1,27 @@
+# typescriptのlintをPR時に実行する
+name: webhook-CI
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "webhook/**"
+  pull_request:
+    paths:
+      - "webhook/**"
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: ./.github/actions/setupEnvironment
+        with:
+          cache-key: "webhook"
+          working-directory: ./webhook
+
+      - name: Lint
+        run: npm run lint
+        working-directory: ./webhook
