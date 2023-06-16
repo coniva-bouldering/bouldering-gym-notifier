@@ -1,0 +1,32 @@
+name: "Setup Environment"
+
+inputs:
+  cache-key:
+    description: "The key to use for caching"
+    required: true
+  working-directory:
+    description: "The working directory to run 'npm ci'"
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+
+    - name: Cache npm directory
+      uses: actions/cache@v3
+      with:
+        # CIでキャッシュするパス
+        path: ~/.npm
+        # キャッシュを保存・復元するキー
+        key: ${{ runner.os }}-${{inputs.cache-key}}-npm-${{ hashFiles('**/package-lock.json') }}
+        # キャッシュがヒットしなかった時に、サブでキャッシュを探すキー
+        restore-keys: ${{ runner.os }}-${{inputs.cache-key}}-npm-
+
+    - name: Install dependencies
+      shell: bash
+      # package-lock.jsonを見てインストールする
+      run: npm ci
+      working-directory: ${{inputs.working-directory}}

@@ -1,0 +1,39 @@
+# Notifierのデプロイ
+name: notifier-CD
+
+on:
+  pull_request:
+    paths:
+      - "notifier/**"
+    branches:
+      - main
+    types: [closed]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true
+    name: Deploy
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - uses: ./.github/actions/setupEnvironment
+        with:
+          cache-key: "notifier"
+          working-directory: ./notifier
+
+      - name: Deploy to Cloudflare Workers
+        uses: cloudflare/wrangler-action@2.0.0
+        with:
+          apiToken: ${{ secrets.CF_API_TOKEN }}
+          accountId: ${{ secrets.CF_ACCOUNT_ID }}
+          wranglerVersion: "3.0.1"
+          workingDirectory: ./notifier
+          command: deploy
+          secrets: CHANNEL_ACCESS_TOKEN
+        env:
+          CHANNEL_ACCESS_TOKEN: ${{ secrets.CHANNEL_ACCESS_TOKEN }}
+
+      - name: Fix permissions borked by cloudflare/wrangler-action
+        run: sudo chown -R $(id -un):$(id -gn) ${{ github.workspace }}

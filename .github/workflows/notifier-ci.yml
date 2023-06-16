@@ -16,24 +16,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 18
 
-      - name: Cache npm directory
-        uses: actions/cache@v3
+      - uses: ./.github/actions/setupEnvironment
         with:
-          # CIでキャッシュするパス
-          path: ~/.npm
-          # キャッシュを保存・復元するキー
-          key: ${{ runner.os }}-notifier-npm-${{ hashFiles('**/package-lock.json') }}
-          # キャッシュがヒットしなかった時に、サブでキャッシュを探すキー
-          restore-keys: ${{ runner.os }}-notifier-npm-
-
-      - name: Install dependencies
-        # package-lock.jsonを見てインストールする
-        run: npm ci
-        working-directory: ./notifier
+          cache-key: "notifier"
+          working-directory: ./notifier
 
       - name: Lint
         run: npm run lint
