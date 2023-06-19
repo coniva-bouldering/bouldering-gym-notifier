@@ -2,7 +2,6 @@ import { Hono } from "hono";
 
 type Env = {
   DB: D1Database;
-  CHANNEL_ACCESS_TOKEN: string;
   CHANNEL_SECRET: string;
 };
 
