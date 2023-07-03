@@ -1,0 +1,16 @@
+name = "short-url"
+main = "./build/worker.mjs"
+compatibility_date = "2022-05-13"
+compatibility_flags = [
+    "streams_enable_constructors"
+]
+
+[build]
+command = "make build"
+
+[[ d1_databases ]]
+binding = "DB" # i.e. available in your Worker on env.DB
+database_name = "bouldering_gym_notifier_db"
+database_id = "d6f9c560-aed5-4c87-8571-3f8f4c85d43a"
+migrations_dir = "../migrations"
+preview_database_id = "777e3713-4386-438e-ba71-30d2f772750d"
