@@ -1,3 +1,0 @@
-curl <https://short-url.haton14.workers.dev/>
-
-curl -X POST -H "Content-Type: application/json" -d '{"origin_url":"<https://blog.haton14.com/"}>' <https://short-url.haton14.workers.dev/>
