@@ -34,9 +34,9 @@ async function scrapeAndSendNews(
   }
 
   const postedURLList = await getAllURL(env.DB);
-  const filteredArticleList = articleList
-    .filter((article: Article) => !postedURLList.includes(article.url))
-    .slice(0, 5);
+  const filteredArticleList = articleList.filter(
+    (article: Article) => !postedURLList.includes(article.url)
+  );
   const groupIdList = await getAllGroupId(env.DB);
 
   if (filteredArticleList.length > 0) {

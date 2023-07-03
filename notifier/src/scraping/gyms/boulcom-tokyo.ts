@@ -20,7 +20,7 @@ export const getNews = (): Promise<Article[]> => {
       const results: Article[] = [];
 
       if (match) {
-        match.splice(3);
+        match.splice(10);
         match.forEach((element) => {
           results.push({
             title: element[TITLE_CAPTURE_GROUP_INDEX],
