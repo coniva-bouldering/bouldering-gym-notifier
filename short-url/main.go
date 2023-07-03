@@ -1,7 +1,6 @@
 package main
 
 import (
-	"context"
 	"crypto/rand"
 	"database/sql"
 	"encoding/json"
@@ -14,54 +13,83 @@ import (
 )
 
 func main() {
+	http.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
+		switch req.Method {
+		case http.MethodGet:
+			// 短縮URLから元のURLにリダイレクトする
+			get(w, req)
+			return
+		case http.MethodPost:
+			// 短縮URLを作成する
+			create(w, req)
+			return
+		default:
+			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+			return
+		}
+	})
+	workers.Serve(nil) // use http.DefaultServeMux
+}
+
+func create(w http.ResponseWriter, req *http.Request) {
 	// d1に接続
-	c, err := d1.OpenConnector(context.Background(), "bouldering_gym_notifier_db")
+	c, err := d1.OpenConnector(req.Context(), "GymDB")
 	if err != nil {
 		log.Fatal(err)
 	}
 	db := sql.OpenDB(c)
-	defer db.Close()
+	type URL struct {
+		OriginalURL string `json:"original_url"`
+	}
+	var url URL
+	if err := json.NewDecoder(req.Body).Decode(&url); err != nil {
+		http.Error(w, "request format is invali", http.StatusBadRequest)
+		return
+	}
+	// [Todo] 既に登録されているURLは登録しない
+	key := generate(5)
+	_, err = db.ExecContext(req.Context(), "INSERT INTO urls (short_url_key, original_url) VALUES (?, ?)", key, url.OriginalURL)
 
-	// 短縮URLを作成する
-	http.HandleFunc("/create", func(w http.ResponseWriter, req *http.Request) {
-		if req.Method != http.MethodPost {
-			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-			return
-		}
-		type URL struct {
-			OriginURL string `json:"origin_url"`
-		}
-		var url URL
-		if err := json.NewDecoder(req.Body).Decode(&url); err != nil {
-			http.Error(w, "request format is invali", http.StatusBadRequest)
-			return
-		}
-		id := generate(5)
-		_, err := db.ExecContext(req.Context(), "INSERT INTO url (short_url_key, origin_url) VALUES (?, ?)", id, url.OriginURL)
-		if err != nil {
-			http.Error(w, fmt.Sprintf("failed insert url: %s", err), http.StatusInternalServerError)
-			return
-		}
-		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(map[string]string{"short_url": id})
+	if err != nil {
+		http.Error(w, fmt.Sprintf("failed insert url: %s", err), http.StatusInternalServerError)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	type Response struct {
+		ShortURLKey string `json:"short_url_key"`
+	}
+	json.NewEncoder(w).Encode(Response{
+		ShortURLKey: key,
 	})
-	// 短縮URLから元のURLにリダイレクトする
-	http.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
-		if req.Method != http.MethodGet {
-			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-			return
-		}
-		key := req.URL.Path[1:]
+}
 
-		var originURL string
-		err = db.QueryRowContext(req.Context(), "SELECT origin_url FROM url WHERE short_url_key = ?", key).Scan(&originURL)
+func get(w http.ResponseWriter, req *http.Request) {
+	// d1に接続
+	c, err := d1.OpenConnector(req.Context(), "GymDB")
+	if err != nil {
+		log.Fatal(err)
+	}
+	db := sql.OpenDB(c)
+	key := req.URL.Path[1:]
+	var originalURL string
+	rows, err := db.QueryContext(req.Context(), fmt.Sprintf("SELECT original_url FROM urls WHERE short_url_key = '%s';", key))
+	if err != nil {
+		type Response struct {
+			ShortURLKey string `json:"short_url_key"`
+		}
+		json.NewEncoder(w).Encode(Response{
+			ShortURLKey: err.Error(),
+		})
+		return
+	}
+	for rows.Next() {
+		err = rows.Scan(&originalURL)
 		if err != nil {
-			http.Error(w, fmt.Sprintf("failed get origin_url: %s", err), http.StatusInternalServerError)
+			http.Error(w, fmt.Sprintf("failed to scan: %s", err), http.StatusInternalServerError)
 			return
 		}
-		http.Redirect(w, req, originURL, http.StatusFound)
-	})
-	workers.Serve(nil) // use http.DefaultServeMux
+	}
+	http.Redirect(w, req, originalURL, http.StatusFound)
 }
 
 // 短縮URL用の文字列を生成する

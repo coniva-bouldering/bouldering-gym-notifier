@@ -1,3 +1,18 @@
+# ざっくり使い方
+
+## 短縮URL生成
+
+```bash
+$ curl -X POST -H "Content-Type: application/json" -d '{"original_url":"https://blog.haton14.com/"}' https://url.haton14.com/
+{"short_url_key":"bnnkn"}
+```
+
+## 短縮URLでアクセス
+
+```bash
+https://url.haton14.com/bnnkn
+```
+
 # 自動生成したやつ↓
 
 # worker-template-tinygo
