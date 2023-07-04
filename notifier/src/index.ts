@@ -1,7 +1,13 @@
 import scrapeGyms from "./scraping/scraping";
 import { sendMessage } from "./line-api/line-api";
 import { getAllGroupId } from "./d1/lineGroupId";
-import { insertArticles, getAllURL, deleteOldArticles } from "./d1/postedArticles";
+import {
+  insertArticles,
+  getAllURL,
+  deleteOldArticles,
+  getNotPostedArticles,
+  updatePostedStatus,
+} from "./d1/scrapedArticles";
 import { Article } from "../type";
 
 interface Env {
@@ -12,20 +18,20 @@ interface Env {
 export default {
   async scheduled(controller: ScheduledController, env: Env, ctx: ExecutionContext) {
     switch (controller.cron) {
-      case "0 1 * * *":
-        ctx.waitUntil(deleteArticles(controller, env));
+      case "55 23 * * *":
+        ctx.waitUntil(scrapeNews(controller, env));
         break;
-      case "0 0 * * *":
-        ctx.waitUntil(scrapeAndSendNews(controller, env));
+      case "0 0 * * 4":
+        ctx.waitUntil(sendNews(controller, env));
+        break;
+      case "0 1 * * 4":
+        ctx.waitUntil(deleteArticles(controller, env));
         break;
     }
   },
 };
 
-async function scrapeAndSendNews(
-  controller: ScheduledController,
-  env: Env
-): Promise<void> {
+async function scrapeNews(controller: ScheduledController, env: Env): Promise<void> {
   console.log("Hello ", controller.scheduledTime);
 
   const articleList = await scrapeGyms();
@@ -37,20 +43,38 @@ async function scrapeAndSendNews(
   const filteredArticleList = articleList.filter(
     (article: Article) => !postedURLList.includes(article.url)
   );
+
+  if (filteredArticleList.length === 0) {
+    return;
+  }
+
+  return insertArticles(env.DB, filteredArticleList)
+    .then(() => {
+      console.log("Articles inserted successfully!");
+    })
+    .catch((e: Error) => {
+      console.error(e);
+    });
+}
+
+async function sendNews(controller: ScheduledController, env: Env): Promise<void> {
+  console.log("Hello ", controller.scheduledTime);
+
+  const articleList = await getNotPostedArticles(env.DB);
   const groupIdList = await getAllGroupId(env.DB);
 
-  if (filteredArticleList.length > 0) {
+  if (articleList.length > 0 && groupIdList.length > 0) {
     const promises: Promise<void>[] = groupIdList.map((groupId: string) => {
-      return sendMessage(env.CHANNEL_ACCESS_TOKEN, groupId, filteredArticleList);
+      return sendMessage(env.CHANNEL_ACCESS_TOKEN, groupId, articleList);
     });
 
     return Promise.all(promises)
       .then(() => {
-        console.log("Message sent successfully!");
-        return insertArticles(env.DB, filteredArticleList);
+        console.log("Messages sent successfully!");
+        return updatePostedStatus(env.DB, articleList);
       })
       .then(() => {
-        console.log("Articles inserted successfully!");
+        console.log("Posted status updated successfully!");
       })
       .catch((e: Error) => {
         console.error(e);
@@ -59,7 +83,7 @@ async function scrapeAndSendNews(
 }
 
 async function deleteArticles(controller: ScheduledController, env: Env): Promise<void> {
-  console.log("Hello2 ", controller.scheduledTime);
+  console.log("Hello ", controller.scheduledTime);
 
   return deleteOldArticles(env.DB)
     .then(() => {

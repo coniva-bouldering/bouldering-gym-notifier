@@ -4,6 +4,7 @@ compatibility_date = "2022-12-01"
 
 [triggers]
 crons = [ 
+  "55 23 * * *", # scrape news
   "0 0 * * 4", # send message from BOT
   "0 1 * * 4" # delete old articles from D1
   ]
