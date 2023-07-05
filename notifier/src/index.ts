@@ -39,9 +39,9 @@ async function scrapeNews(controller: ScheduledController, env: Env): Promise<vo
     return;
   }
 
-  const postedURLList = await getAllURL(env.DB);
+  const insertedURLList = await getAllURL(env.DB);
   const filteredArticleList = articleList.filter(
-    (article: Article) => !postedURLList.includes(article.url)
+    (article: Article) => !insertedURLList.includes(article.url)
   );
 
   if (filteredArticleList.length === 0) {
