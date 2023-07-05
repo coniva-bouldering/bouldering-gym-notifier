@@ -19,7 +19,6 @@ export const getAllURL = async (DB: D1Database): Promise<string[]> => {
   return results.flat() || [];
 };
 
-// TODO check behavior
 export const deleteOldArticles = async (
   DB: D1Database,
   exceptLatestNumber = 20
