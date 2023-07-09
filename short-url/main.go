@@ -41,25 +41,51 @@ func create(w http.ResponseWriter, req *http.Request) {
 	type URL struct {
 		OriginalURL string `json:"original_url"`
 	}
-	var url URL
-	if err := json.NewDecoder(req.Body).Decode(&url); err != nil {
-		http.Error(w, "request format is invali", http.StatusBadRequest)
+	type URLs []URL
+	urls := URLs{}
+	if err := json.NewDecoder(req.Body).Decode(&urls); err != nil {
+		http.Error(w, "request format is invalid.", http.StatusBadRequest)
 		return
 	}
-	// [Todo] 既に登録されているURLは登録しない
-	key := generate(5)
-	_, err = db.ExecContext(req.Context(), "INSERT INTO urls (short_url_key, original_url) VALUES (?, ?)", key, url.OriginalURL)
-
+	// URLが空の場合は何もしない
+	if len(urls) == 0 {
+		return
+	}
+	// URLの数が10個以上の場合はエラー
+	if len(urls) > 10 {
+		http.Error(w, "fuck, array too big.", http.StatusBadRequest)
+		return
+	}
+	// 短縮URL登録
+	keys := make([]string, 0, len(urls))
+	for _, v := range urls {
+	ReTry:
+		key := generate(5)
+		// 短縮URLの重複チェック
+		rows, err := db.QueryContext(req.Context(), fmt.Sprintf("SELECT original_url FROM urls WHERE short_url_key = '%s';", key))
+		if err != nil {
+			http.Error(w, fmt.Sprintf("unexpected: %s", err), http.StatusInternalServerError)
+			return
+		}
+		if rows.Next() {
+			// 短縮URLが重複するならgoto文でkey生成からリトライさせる
+			goto ReTry
+		}
+		// 短縮URL登録
+		_, err = db.ExecContext(req.Context(), "INSERT INTO urls (short_url_key, original_url) VALUES (?, ?)", key, v.OriginalURL)
+		keys = append(keys, key)
+	}
 	if err != nil {
 		http.Error(w, fmt.Sprintf("failed insert url: %s", err), http.StatusInternalServerError)
 		return
 	}
+	// レスポンス生成
 	w.Header().Set("Content-Type", "application/json")
 	type Response struct {
-		ShortURLKey string `json:"short_url_key"`
+		ShortURLKey []string `json:"short_url_keys"`
 	}
 	json.NewEncoder(w).Encode(Response{
-		ShortURLKey: key,
+		ShortURLKey: keys,
 	})
 }
 
@@ -74,12 +100,7 @@ func get(w http.ResponseWriter, req *http.Request) {
 	var originalURL string
 	rows, err := db.QueryContext(req.Context(), fmt.Sprintf("SELECT original_url FROM urls WHERE short_url_key = '%s';", key))
 	if err != nil {
-		type Response struct {
-			ShortURLKey string `json:"short_url_key"`
-		}
-		json.NewEncoder(w).Encode(Response{
-			ShortURLKey: err.Error(),
-		})
+		http.Error(w, fmt.Sprintf("unexpected: %s", err), http.StatusInternalServerError)
 		return
 	}
 	for rows.Next() {
