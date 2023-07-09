@@ -3,8 +3,8 @@
 ## 短縮URL生成
 
 ```bash
-$ curl -X POST -H "Content-Type: application/json" -d '{"original_url":"https://blog.haton14.com/"}' https://url.haton14.com/
-{"short_url_key":"bnnkn"}
+$ curl -X POST -H "Content-Type: application/json" -d '[{"original_url":"https://blog.haton14.com/"},{"original_url":"https://blog.haton14.com/2023-04-28_first-post/"}]' https://su.coniva.net/
+{"short_url_keys":["eykhx","jilcv"]}
 ```
 
 ## 短縮URLでアクセス
