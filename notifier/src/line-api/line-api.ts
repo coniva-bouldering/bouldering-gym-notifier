@@ -5,10 +5,9 @@ export const sendMessage = async (
   groupId: string,
   articleList: Article[]
 ): Promise<void> => {
-  const message = articleList.map((article) => ({
-    type: "text",
-    text: article.title + "\n" + article.url,
-  }));
+  const message = articleList.reduce((acc, article) => {
+    return `${article.title}\n${article.url}\n\n${acc}`;
+  }, "");
 
   return fetch("https://api.line.me/v2/bot/message/push", {
     method: "POST",
@@ -18,7 +17,12 @@ export const sendMessage = async (
     },
     body: JSON.stringify({
       to: groupId,
-      messages: message,
+      messages: [
+        {
+          type: "text",
+          text: message,
+        },
+      ],
     }),
   })
     .then((response) => {
