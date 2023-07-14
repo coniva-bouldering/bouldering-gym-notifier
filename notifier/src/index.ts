@@ -21,10 +21,10 @@ export default {
       case "55 23 * * *":
         ctx.waitUntil(scrapeNews(controller, env));
         break;
-      case "0 0 * * 4":
+      case "0 0 * * 5":
         ctx.waitUntil(sendNews(controller, env));
         break;
-      case "0 1 * * 4":
+      case "0 1 * * 5":
         ctx.waitUntil(deleteArticles(controller, env));
         break;
     }
