@@ -1,6 +1,19 @@
 # bouldering-gym-notifier
 
-Cron でスクレイピングと通知を定期実行する
+ボルダリングジムの更新を知らせるボット
+
+## ディレクトリ構成
+
+モノレポで行う
+
+```bash
+
+bouldering-gym-notifier
+├── notifier Cronでスクレイピングと通知を定期実行
+├── webhook HonoでLINEからのWebhookを受け取り、送信先グループIDなどを受け取る
+└── short-url スクレイピングした記事の短縮URLを生成する
+
+```
 
 ## シーケンス
 
@@ -51,17 +64,16 @@ sequenceDiagram
     db-->>worker: 成功
 ```
 
-### 古い記事を D1 から削除
+## インフラ構成
 
 ```mermaid
-sequenceDiagram
-    autonumber
-    participant cron as Cron Triggers
-    participant worker as Cloudflare Workers
-    participant db as Cloudflare D1
-
-    cron->>cron: 毎週木曜日~土曜日にWorkerを起動するようにする
-    cron->>worker: Worker起動リクエストを送る
-    worker->>db: 最新の20件以外の記事を削除
-    db-->>worker: 成功
+flowchart TD
+    subgraph Cloudflare
+        cron[Cron Triggers] --> worker[Cloudflare Workers]
+        worker --> db[(Cloudflare D1)]
+    end
+    subgraph LINE
+        worker --> line[LINEbot]
+        line --> u[我々のLINEグループ]
+    end
 ```
