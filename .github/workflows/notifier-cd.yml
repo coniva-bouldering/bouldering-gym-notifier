@@ -25,7 +25,7 @@ jobs:
           working-directory: ./notifier
 
       - name: Deploy to Cloudflare Workers
-        uses: cloudflare/wrangler-action@3
+        uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CF_API_TOKEN }}
           wranglerVersion: "3.19.0"
