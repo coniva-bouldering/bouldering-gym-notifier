@@ -21,14 +21,13 @@ export const getNews = (): Promise<Article[]> => {
 
 			if (match) {
 				match.splice(3);
-				match.forEach((element) => {
+				for (const element of match) {
 					results.push({
 						title: element[TITLE_CAPTURE_GROUP_INDEX],
 						url: element[URL_CAPTURE_GROUP_INDEX],
 					});
-				});
+				}
 			}
-
 			return results;
 		})
 		.catch((e: Error) => {

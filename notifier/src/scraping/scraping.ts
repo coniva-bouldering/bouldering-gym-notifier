@@ -10,13 +10,13 @@ const scrapeGyms = async () => {
 	return Promise.allSettled(promises)
 		.then((results) => {
 			const fulfilledResults: Article[] = [];
-			results.forEach((result) => {
+			for (const result of results) {
 				if (result.status === "fulfilled") {
 					fulfilledResults.push(...result.value);
 				} else {
 					console.error(result.reason);
 				}
-			});
+			}
 			return fulfilledResults;
 		})
 		.catch((error) => {

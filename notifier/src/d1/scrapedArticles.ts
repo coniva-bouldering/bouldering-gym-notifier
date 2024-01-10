@@ -16,7 +16,7 @@ export const insertArticles = async (
 
 export const getAllURL = async (DB: D1Database): Promise<string[]> => {
 	const results = await DB.prepare(
-		`select url from scraped_articles`,
+		"select url from scraped_articles",
 	).raw<string>();
 	return results.flat() || [];
 };
@@ -26,7 +26,7 @@ export const deleteOldArticles = async (
 	exceptLatestNumber = 20,
 ): Promise<D1Result<unknown>> => {
 	const info = await DB.prepare(
-		`DELETE FROM scraped_articles WHERE url NOT IN (SELECT url FROM scraped_articles ORDER BY created_at DESC LIMIT ?);`,
+		"DELETE FROM scraped_articles WHERE url NOT IN (SELECT url FROM scraped_articles ORDER BY created_at DESC LIMIT ?);",
 	)
 		.bind(exceptLatestNumber)
 		.run();
@@ -38,7 +38,7 @@ export const getNotPostedArticles = async (
 	DB: D1Database,
 ): Promise<Article[]> => {
 	const results = await DB.prepare(
-		`SELECT title, url FROM scraped_articles WHERE posted == false;`,
+		"SELECT title, url FROM scraped_articles WHERE posted == false;",
 	).raw();
 
 	const notPostedArticles = results.map((result) => {
