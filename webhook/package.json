@@ -25,7 +25,7 @@
   ],
   "license": "ISC",
   "dependencies": {
-    "hono": "^3.1.8"
+    "hono": "^3.11.7"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20230404.0",
@@ -36,7 +36,7 @@
     "eslint-plugin-prettier": "^4.2.1",
     "prettier": "^2.8.8",
     "typescript": "^5.0.4",
-    "wrangler": "^3.0.1"
+    "wrangler": "^3.19.0"
   },
   "private": true,
   "volta": {
