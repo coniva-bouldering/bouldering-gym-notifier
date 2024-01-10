@@ -5,6 +5,7 @@ on:
   pull_request:
     paths:
       - "notifier/**"
+      - ".github/workflows/notifier-cd.yml"
     branches:
       - main
     types: [closed]
@@ -24,11 +25,10 @@ jobs:
           working-directory: ./notifier
 
       - name: Deploy to Cloudflare Workers
-        uses: cloudflare/wrangler-action@2.0.0
+        uses: cloudflare/wrangler-action@3
         with:
           apiToken: ${{ secrets.CF_API_TOKEN }}
-          accountId: ${{ secrets.CF_ACCOUNT_ID }}
-          wranglerVersion: "3.0.1"
+          wranglerVersion: "3.19.0"
           workingDirectory: ./notifier
           command: deploy
           secrets: CHANNEL_ACCESS_TOKEN
