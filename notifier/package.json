@@ -8,8 +8,9 @@
     "dev": "wrangler dev --remote --test-scheduled",
     "migration": "wrangler d1 migrations apply bouldering_gym_notifier_db",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "npx eslint src",
-    "format": "npx eslint src --fix"
+    "lint": "npx biome lint ./src",
+    "lint.apply": "npx biome lint --apply ./src",
+    "format": "npx biome format --write ./src"
   },
   "keywords": [],
   "author": {
@@ -29,14 +30,9 @@
   ],
   "license": "ISC",
   "devDependencies": {
+    "@biomejs/biome": "1.5.1",
     "@cloudflare/workers-types": "^4.20231010.0",
     "@types/node": "^20.8.4",
-    "@typescript-eslint/eslint-plugin": "^5.61.0",
-    "@typescript-eslint/parser": "^5.62.0",
-    "eslint": "^8.51.0",
-    "eslint-config-prettier": "^8.8.0",
-    "eslint-plugin-prettier": "^4.2.1",
-    "prettier": "^2.8.8",
     "typescript": "^5.1.6",
     "wrangler": "^3.19.0"
   },
