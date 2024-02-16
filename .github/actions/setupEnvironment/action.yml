@@ -16,7 +16,7 @@ runs:
         node-version: 20
 
     - name: Cache npm directory
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         # CIでキャッシュするパス
         path: ~/.npm
