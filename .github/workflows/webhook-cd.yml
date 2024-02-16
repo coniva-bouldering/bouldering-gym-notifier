@@ -5,6 +5,7 @@ on:
   pull_request:
     paths:
       - "webhook/**"
+      - ".github/workflows/webhook-cd.yml"
     branches:
       - main
     types: [closed]
@@ -16,7 +17,7 @@ jobs:
     name: Deploy
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - uses: ./.github/actions/setupEnvironment
         with:

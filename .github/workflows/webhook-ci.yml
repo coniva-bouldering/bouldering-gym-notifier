@@ -5,17 +5,16 @@ on:
   push:
     branches:
       - main
-    paths:
-      - "webhook/**"
   pull_request:
     paths:
+      - ".github/workflows/webhook-ci.yml"
       - "webhook/**"
 
 jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - uses: ./.github/actions/setupEnvironment
         with:

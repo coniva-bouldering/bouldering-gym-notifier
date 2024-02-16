@@ -2,20 +2,16 @@
 name: notifier-CI
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - "notifier/**"
   pull_request:
     paths:
+      - ".github/workflows/notifier-ci.yml"
       - "notifier/**"
 
 jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - uses: ./.github/actions/setupEnvironment
         with:
