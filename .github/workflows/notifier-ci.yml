@@ -2,13 +2,9 @@
 name: notifier-CI
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - "notifier/**"
   pull_request:
     paths:
+      - ".github/workflows/notifier-ci.yml"
       - "notifier/**"
 
 jobs:
