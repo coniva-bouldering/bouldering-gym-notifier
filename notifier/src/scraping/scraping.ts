@@ -1,11 +1,9 @@
 import { Article } from "../../type";
 import { getNews as getBPumpTokyoNews } from "./gyms/b-pump-tokyo";
-import { getNews as getBoulcomTokyoNews } from "./gyms/boulcom-tokyo";
 
 const scrapeGyms = async () => {
 	const promises: Promise<Article[]>[] = [];
 	promises.push(getBPumpTokyoNews());
-	promises.push(getBoulcomTokyoNews());
 
 	return Promise.allSettled(promises)
 		.then((results) => {
