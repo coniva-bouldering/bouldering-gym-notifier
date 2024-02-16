@@ -31,7 +31,6 @@ jobs:
           accountId: ${{ secrets.CF_ACCOUNT_ID }}
           wranglerVersion: "3.28.2"
           workingDirectory: ./webhook
-          command: deploy
           secrets: CHANNEL_SECRET
         env:
           CHANNEL_SECRET: ${{ secrets.CHANNEL_SECRET }}

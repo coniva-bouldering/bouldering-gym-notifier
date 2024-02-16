@@ -31,7 +31,6 @@ jobs:
           accountId: ${{ secrets.CF_ACCOUNT_ID }}
           wranglerVersion: "3.28.2"
           workingDirectory: ./notifier
-          # command: deploy コメントアウトしてみる
           secrets: CHANNEL_ACCESS_TOKEN
         env:
           CHANNEL_ACCESS_TOKEN: ${{ secrets.CHANNEL_ACCESS_TOKEN }}
