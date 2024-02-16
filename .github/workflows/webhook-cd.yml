@@ -6,6 +6,7 @@ on:
     paths:
       - "webhook/**"
       - ".github/workflows/webhook-cd.yml"
+      - ".github/actions/setupEnvironment/action.yml"
     branches:
       - main
     types: [closed]

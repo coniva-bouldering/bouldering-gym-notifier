@@ -6,7 +6,7 @@ on:
     paths:
       - ".github/workflows/notifier-ci.yml"
       - "notifier/**"
-
+      - ".github/actions/setupEnvironment/action.yml"
 jobs:
   lint:
     runs-on: ubuntu-latest
