@@ -30,7 +30,7 @@ jobs:
           apiToken: ${{ secrets.CF_API_TOKEN }}
           wranglerVersion: "3.19.0"
           workingDirectory: ./notifier
-          command: deploy
+          # command: deploy コメントアウトしてみる
           secrets: CHANNEL_ACCESS_TOKEN
         env:
           CHANNEL_ACCESS_TOKEN: ${{ secrets.CHANNEL_ACCESS_TOKEN }}
