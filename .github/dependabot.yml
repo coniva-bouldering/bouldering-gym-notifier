@@ -9,3 +9,8 @@ updates:
     directory: "/notifier" # Location of package manifests
     schedule:
       interval: "daily"
+
+  - package-ecosystem: "npm" # See documentation for possible values
+    directory: "/webhook" # Location of package manifests
+    schedule:
+      interval: "daily"
