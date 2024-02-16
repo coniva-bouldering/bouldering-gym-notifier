@@ -34,7 +34,7 @@
     "@cloudflare/workers-types": "^4.20231010.0",
     "@types/node": "^20.8.4",
     "typescript": "^5.1.6",
-    "wrangler": "^3.19.0"
+    "wrangler": "^3.28.2"
   },
   "volta": {
     "node": "20.10.0",
