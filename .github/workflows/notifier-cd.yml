@@ -28,9 +28,10 @@ jobs:
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CF_API_TOKEN }}
-          wranglerVersion: "3.19.0"
+          accountId: ${{ secrets.CF_ACCOUNT_ID }}
+          wranglerVersion: "3.28.2"
           workingDirectory: ./notifier
-          command: deploy
+          # command: deploy コメントアウトしてみる
           secrets: CHANNEL_ACCESS_TOKEN
         env:
           CHANNEL_ACCESS_TOKEN: ${{ secrets.CHANNEL_ACCESS_TOKEN }}
