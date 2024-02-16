@@ -5,6 +5,7 @@ on:
   pull_request:
     paths:
       - "webhook/**"
+      - ".github/workflows/webhook-cd.yml"
     branches:
       - main
     types: [closed]
