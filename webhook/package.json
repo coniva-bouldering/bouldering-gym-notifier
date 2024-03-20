@@ -32,7 +32,7 @@
     "@biomejs/biome": "1.5.3",
     "@cloudflare/workers-types": "^4.20230404.0",
     "typescript": "^5.3.3",
-    "wrangler": "^3.28.2"
+    "wrangler": "^3.35.0"
   },
   "private": true,
   "volta": {
