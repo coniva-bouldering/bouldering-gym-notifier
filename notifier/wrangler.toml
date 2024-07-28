@@ -12,5 +12,5 @@ crons = [
 [[ d1_databases ]]
 binding = "DB" # i.e. available in your Worker on env.DB
 database_name = "bouldering_gym_notifier_db"
-database_id = "d6f9c560-aed5-4c87-8571-3f8f4c85d43a"
+database_id = "2d33b74d-3c67-44de-8c45-dc98bea11956"
 migrations_dir = "../migrations"
