@@ -31,10 +31,10 @@
   "license": "ISC",
   "devDependencies": {
     "@biomejs/biome": "1.5.3",
-    "@cloudflare/workers-types": "^4.20240208.0",
+    "@cloudflare/workers-types": "^4.20240512.0",
     "@types/node": "^20.11.19",
     "typescript": "^5.4.5",
-    "wrangler": "^3.28.2"
+    "wrangler": "^3.57.0"
   },
   "volta": {
     "node": "20.11.1",
