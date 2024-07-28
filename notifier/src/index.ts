@@ -8,7 +8,7 @@ import {
 	getNotPostedArticles,
 	updatePostedStatus,
 } from "./d1/scrapedArticles";
-import { Article } from "../type";
+import type { Article } from "../type";
 
 interface Env {
 	CHANNEL_ACCESS_TOKEN: string;

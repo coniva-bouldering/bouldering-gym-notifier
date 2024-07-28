@@ -1,4 +1,4 @@
-import { Article } from "../../type";
+import type { Article } from "../../type";
 import { getNews as getBPumpTokyoNews } from "./gyms/b-pump-tokyo";
 
 const scrapeGyms = async () => {

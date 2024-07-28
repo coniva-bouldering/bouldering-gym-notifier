@@ -1,4 +1,4 @@
-import { Article } from "../../../type";
+import type { Article } from "../../../type";
 
 const URL = "https://pump-climbing.com/gym/akiba/news/";
 const REGEX =

@@ -1,4 +1,4 @@
-import { Article } from "../../type";
+import type { Article } from "../../type";
 
 export const sendMessage = async (
 	channelAccessToken: string,
