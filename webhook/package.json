@@ -26,7 +26,7 @@
   ],
   "license": "ISC",
   "dependencies": {
-    "hono": "^4.5.8"
+    "hono": "^4.6.4"
   },
   "devDependencies": {
     "@biomejs/biome": "1.8.3",
