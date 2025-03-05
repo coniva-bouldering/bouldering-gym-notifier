@@ -26,12 +26,12 @@
   ],
   "license": "ISC",
   "dependencies": {
-    "hono": "^4.6.15"
+    "hono": "^4.7.2"
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
     "@cloudflare/workers-types": "^4.20241230.0",
-    "typescript": "^5.6.3",
+    "typescript": "^5.8.2",
     "wrangler": "^3.89.0"
   },
   "private": true,
